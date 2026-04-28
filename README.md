@@ -139,15 +139,15 @@ This GitOps repository uses GitHub Actions to manage both **deployment/promotion
 
 ### CD – Promotion & Deployment Pipelines
 
-#### `update-dev.yaml`
+#### DEV Update (`update-dev.yaml`)
 - Creates a PR to DEV values that references and pins the latest published image digest in the container registry (built in the application repository)
 - On auto-merge: Argo CD sync → DEV cluster
 
-#### `promotion-handler.yaml`
+#### STAGING Promotion (`promotion-handler.yaml`)
 - Creates a PR to STAGING values that references and pins the image digest deployed in DEV
 - On manual merge: Argo CD sync → STAGING cluster
 
-#### `prod-release-handler.yaml`
+#### PROD Release (`prod-release-handler.yaml`)
 - Creates a PR to PROD values that sets the release tag (SemVer) and pins the same image digest that has been promoted through DEV and STAGING
 - On manual merge: Argo CD sync → PROD cluster
 
@@ -155,7 +155,7 @@ This GitOps repository uses GitHub Actions to manage both **deployment/promotion
 
 > These pipelines run automatically on changes in the GitOps repository to ensure that only validated and secure manifests are deployed to the cluster.
 
-#### `gitops-validation.yaml`
+#### GitOps Validation (`gitops-validation.yaml`)
 Runs on Pull Requests to:
 - Validate YAML syntax
 - Ensure correct structure of Helm manifests
@@ -163,7 +163,7 @@ Runs on Pull Requests to:
 
 > Prevents Argo CD from syncing broken or invalid manifests to the cluster.
 
-#### `secret-scan.yaml`
+#### Secret Scan (`secret-scan.yaml`)
 Dedicated pipeline for **secret scanning** in the GitOps repository:
 - Runs Gitleaks with custom configuration
 - Detects potential credentials and secrets
